@@ -5,6 +5,8 @@ export interface Lesson {
   description: string;
   content: string;
   keywords: string[];
+  mathHighlight?: string;
+  resources?: string[];
 }
 
 export interface DayPlan {
@@ -12,7 +14,7 @@ export interface DayPlan {
   title: string;
   category: 'Fundamentals' | 'Generation' | 'Analysis' | 'Protection' | 'Control' | 'Modern Grid';
   lessons: Lesson[];
-  quiz?: string[]; // Questions
+  quiz?: string[];
 }
 
 export interface ChatMessage {
