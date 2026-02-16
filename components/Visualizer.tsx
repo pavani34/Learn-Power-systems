@@ -3,13 +3,26 @@ import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, ScatterChart, Scatter, ZAxis } from 'recharts';
 
 interface VisualizerProps {
-  type: 'load-curve' | 'phasor' | 'transformer-efficiency' | 'sequence-network' | 'sparsity' | 'residuals';
+  type: 'load-curve' | 'phasor' | 'transformer-efficiency' | 'sequence-network' | 'sparsity' | 'residuals' | 'dispatch' | 'stability';
 }
 
 const loadData = [
   { hour: '00', load: 120 }, { hour: '04', load: 80 }, { hour: '08', load: 150 },
   { hour: '12', load: 240 }, { hour: '16', load: 260 }, { hour: '20', load: 220 },
   { hour: '23', load: 140 },
+];
+
+const stabilityData = Array.from({length: 20}, (_, i) => ({
+  t: i,
+  delta: 30 + 15 * Math.sin(i * 0.5) * Math.exp(-i * 0.1),
+  stable: 30
+}));
+
+const dispatchData = [
+  { name: 'Coal A', cost: 20, mw: 150 },
+  { name: 'Gas B', cost: 45, mw: 100 },
+  { name: 'Nuclear C', cost: 10, mw: 300 },
+  { name: 'Solar D', cost: 5, mw: 50 },
 ];
 
 const efficiencyData = [
@@ -46,6 +59,45 @@ const Visualizer: React.FC<VisualizerProps> = ({ type }) => {
             <Area type="monotone" dataKey="load" stroke="#2563eb" fillOpacity={1} fill="url(#colorLoad)" />
           </AreaChart>
         </ResponsiveContainer>
+      </div>
+    );
+  }
+
+  if (type === 'stability') {
+    return (
+      <div className="h-64 bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+        <h4 className="text-xs font-bold text-slate-500 mb-4 uppercase">Transient Stability (Rotor Angle $\delta$)</h4>
+        <ResponsiveContainer width="100%" height="80%">
+          <LineChart data={stabilityData}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+            <XAxis dataKey="t" hide />
+            <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10}} domain={[0, 60]} />
+            <Tooltip />
+            <Line type="monotone" dataKey="delta" stroke="#ef4444" strokeWidth={3} dot={false} name="Actual Δ" />
+            <Line type="dashed" dataKey="stable" stroke="#94a3b8" strokeDasharray="5 5" dot={false} name="Setpoint" />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  }
+
+  if (type === 'dispatch') {
+    return (
+      <div className="h-64 bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+        <h4 className="text-xs font-bold text-slate-500 mb-4 uppercase">Economic Dispatch Stack</h4>
+        <div className="flex h-[70%] items-end gap-2 px-2">
+          {dispatchData.sort((a,b) => a.cost - b.cost).map(d => (
+            <div key={d.name} className="flex-1 flex flex-col items-center gap-1 group">
+              <div className="text-[8px] font-bold text-slate-400 group-hover:text-blue-600">${d.cost}</div>
+              <div 
+                className="w-full bg-slate-100 border border-slate-200 rounded-t transition-all group-hover:bg-blue-600 group-hover:border-blue-700" 
+                style={{ height: `${(d.mw / 300) * 100}%` }}
+              ></div>
+              <div className="text-[8px] font-black truncate w-full text-center uppercase">{d.name}</div>
+            </div>
+          ))}
+        </div>
+        <p className="text-[9px] text-slate-400 mt-4 text-center">Lowest incremental cost units are dispatched first (Merit Order).</p>
       </div>
     );
   }

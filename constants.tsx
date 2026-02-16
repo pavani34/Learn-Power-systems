@@ -65,6 +65,36 @@ export const COURSE_CURRICULUM: DayPlan[] = [
     ]
   },
   {
+    day: 4,
+    title: "Transmission Line Geometry",
+    category: "Analysis",
+    lessons: [
+      {
+        id: "4.1",
+        title: "GMD, GMR & Bundling",
+        description: "Inductance and Capacitance of overhead lines.",
+        content: "Geometric Mean Distance (GMD) and Geometric Mean Radius (GMR) determine line impedance. Bundling conductors reduces the electric field at the surface, which mitigates Corona losses.",
+        keywords: ["Bundling", "Corona Discharge", "GMD", "GMR"],
+        mathHighlight: "L = 2 \\times 10^{-7} \\ln\\left(\\frac{GMD}{GMR_L}\\right) \\text{ H/m}"
+      }
+    ]
+  },
+  {
+    day: 5,
+    title: "Steady-State Line Performance",
+    category: "Analysis",
+    lessons: [
+      {
+        id: "5.1",
+        title: "Ferranti Effect & Surge Impedance Loading",
+        description: "Voltage rise and power transfer limits.",
+        content: "At no-load, long lines exhibit a voltage rise at the receiving end called the Ferranti Effect. Surge Impedance Loading (SIL) is the power at which the line generates as much reactive power as it consumes.",
+        keywords: ["Ferranti Effect", "SIL", "Characteristic Impedance"],
+        mathHighlight: "Z_c = \\sqrt{\\frac{L}{C}}"
+      }
+    ]
+  },
+  {
     day: 6,
     title: "Computer-Aided Power Solving (CAPS)",
     category: "Analysis",
@@ -84,6 +114,111 @@ export const COURSE_CURRICULUM: DayPlan[] = [
         content: "Modern grid matrices are sparse. We use Sparse Matrix Storage and LU Decomposition with Optimal Ordering (Tinney Schemes) to maintain efficiency and minimize 'fill-in'.",
         keywords: ["Sparse Matrix", "LU Decomposition", "Tinney Ordering"],
         mathHighlight: "\\mathbf{Y}_{bus} = \\mathbf{L} \\cdot \\mathbf{U}"
+      }
+    ]
+  },
+  {
+    day: 7,
+    title: "Optimal Power Flow & Economics",
+    category: "Analysis",
+    lessons: [
+      {
+        id: "7.1",
+        title: "Economic Dispatch & Incremental Cost",
+        description: "Minimizing total fuel cost across generators.",
+        content: "Economic dispatch determines the optimal output of each generator to meet load at minimum cost while respecting limits. This is solved using Lagrange Multipliers (the 'Lambda' method).",
+        keywords: ["Economic Dispatch", "Lagrange Multipliers", "Incremental Cost"],
+        mathHighlight: "\\frac{dC_1}{dP_1} = \\frac{dC_2}{dP_2} = \\dots = \\lambda"
+      }
+    ]
+  },
+  {
+    day: 8,
+    title: "Protection & Switchgear",
+    category: "Protection",
+    lessons: [
+      {
+        id: "8.1",
+        title: "Relay Coordination & Zones",
+        description: "Protecting the grid from short circuits.",
+        content: "Protection systems must be fast and selective. We use zones of protection so that only the faulted section is isolated. Overcurrent, Distance, and Differential relays are the three main types.",
+        keywords: ["Differential Relay", "Selectivity", "CT Saturation"],
+        mathHighlight: "I_{trip} > I_{pickup}"
+      }
+    ]
+  },
+  {
+    day: 9,
+    title: "Symmetrical Components",
+    category: "Analysis",
+    lessons: [
+      {
+        id: "9.1",
+        title: "Fortescue's Transformation",
+        description: "Decomposing unbalanced systems.",
+        content: "Unbalanced 3-phase systems are decomposed into Positive, Negative, and Zero sequence components. This allows for simple fault analysis using balanced single-phase equivalents.",
+        keywords: ["Sequence Network", "Fortescue", "Unbalanced Faults"],
+        mathHighlight: "\\mathbf{V}_{abc} = \\begin{bmatrix} 1 & 1 & 1 \\\\ 1 & a^2 & a \\\\ 1 & a & a^2 \\end{bmatrix} \\mathbf{V}_{012}"
+      }
+    ]
+  },
+  {
+    day: 10,
+    title: "Transient Stability",
+    category: "Control",
+    lessons: [
+      {
+        id: "10.1",
+        title: "The Swing Equation",
+        description: "Dynamics of a machine after a fault.",
+        content: "Transient stability is the ability of the system to maintain synchronism after a severe disturbance. The Swing Equation describes the motion of the generator rotor angle ($\\delta$) relative to the magnetic field.",
+        keywords: ["Swing Equation", "Critical Clearing Time", "Inertia"],
+        mathHighlight: "M \\frac{d^2\\delta}{dt^2} = P_m - P_e"
+      }
+    ]
+  },
+  {
+    day: 11,
+    title: "Voltage Stability",
+    category: "Control",
+    lessons: [
+      {
+        id: "11.1",
+        title: "P-V Curves & The Knee Point",
+        description: "Avoiding voltage collapse.",
+        content: "Voltage stability concerns the ability of the system to maintain steady voltages at all buses. The 'Knee' of the $P-V$ curve represents the maximum power transfer limit beyond which voltage collapse occurs.",
+        keywords: ["Voltage Collapse", "Knee Point", "Reactive Support"],
+        mathHighlight: "\\frac{dV}{dP} \\to \\infty \\text{ at the limit}"
+      }
+    ]
+  },
+  {
+    day: 12,
+    title: "FACTS & HVDC",
+    category: "Modern Grid",
+    lessons: [
+      {
+        id: "12.1",
+        title: "Flexible AC Transmission (FACTS)",
+        description: "Power electronics for grid control.",
+        content: "FACTS devices like STATCOMs and SVCs provide ultra-fast reactive power control to improve stability and power transfer. HVDC allows for efficient bulk power transfer over long distances.",
+        keywords: ["STATCOM", "SVC", "HVDC", "Thyristors"],
+        mathHighlight: "P_{12} = \\frac{V_1 V_2}{X} \\sin(\\delta_1 - \\delta_2)"
+      }
+    ]
+  },
+  {
+    day: 13,
+    title: "Power System Control",
+    category: "Control",
+    lessons: [
+      {
+        id: "13.1",
+        title: "AGC & Frequency Control",
+        description: "Balancing generation and load in real-time.",
+        content: "Automatic Generation Control (AGC) adjusts the setpoints of generators to keep system frequency at 60Hz (or 50Hz) and manage power exchanges between different areas.",
+        keywords: ["AGC", "Frequency Droop", "Area Control Error"],
+        mathHighlight: "ACE = (I_{act} - I_{sched}) + B(f_{act} - f_{sched})"
       }
     ]
   },

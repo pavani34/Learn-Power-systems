@@ -147,7 +147,9 @@ const App: React.FC = () => {
                   {lesson.id === "1.2" && <Visualizer type="phasor" />}
                   {lesson.id === "3.1" && <Visualizer type="transformer-efficiency" />}
                   {lesson.id === "6.2" && <Visualizer type="sparsity" />}
+                  {lesson.id === "7.1" && <Visualizer type="dispatch" />}
                   {lesson.id === "9.1" && <Visualizer type="sequence-network" />}
+                  {lesson.id === "10.1" && <Visualizer type="stability" />}
                   {lesson.id === "14.2" && <Visualizer type="residuals" />}
                 </div>
               </section>
