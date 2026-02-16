@@ -96,16 +96,24 @@ export const COURSE_CURRICULUM: DayPlan[] = [
   },
   {
     day: 6,
-    title: "Power Flow (Load Flow) Dynamics",
+    title: "Computer-Aided Power Solving (CAPS)",
     category: "Analysis",
     lessons: [
       {
         id: "6.1",
-        title: "Newton-Raphson & The Jacobian",
-        description: "Solving the non-linear power equations.",
-        content: "Power flow is a system of non-linear equations. We use the Newton-Raphson method to iterate towards a solution. The Jacobian Matrix (J) relates changes in P and Q to changes in Voltage Magnitude and Angle. \n\nJ = [dP/dδ, dP/dV; dQ/dδ, dQ/dV]",
-        keywords: ["Iteration", "Convergence", "Mismatch Vector"],
-        mathHighlight: "[\Delta P, \Delta Q]^T = [J] [\Delta \delta, \Delta V/V]^T"
+        title: "The Jacobian & Fast Decoupled Method",
+        description: "Solving non-linear flows at scale.",
+        content: "Real-world grids have thousands of buses. Standard Newton-Raphson is precise but computationally heavy. \n\nIndustry often uses the 'Fast Decoupled Power Flow' (FDPF). It exploits the physics of power systems: changes in Real Power (P) are strongly coupled to Voltage Angle (δ), and Reactive Power (Q) to Voltage Magnitude (V). By 'decoupling' these into two smaller matrices, we gain massive speed with minimal accuracy loss.",
+        keywords: ["Jacobian", "FDPF", "N-1 Contingency"],
+        mathHighlight: "[B'] [\Delta \delta] = [\Delta P/V]"
+      },
+      {
+        id: "6.2",
+        title: "Sparsity & LU Decomposition",
+        description: "Numerical efficiency for large grids.",
+        content: "A 10,000-bus system has a Y-bus matrix with 100 million entries. However, most buses connect to only 2-3 others. This makes the matrix 'Sparse' (99.9% zeros). \n\nComputer solvers use Sparse Matrix Storage and LU Decomposition with Optimal Ordering (Tinney Schemes) to solve the system without filling in the zeros, reducing RAM usage from Gigabytes to Megabytes.",
+        keywords: ["Sparse Matrix", "LU Decomposition", "Tinney Ordering"],
+        mathHighlight: "Y = L \cdot U"
       }
     ]
   },
@@ -141,7 +149,7 @@ export const COURSE_CURRICULUM: DayPlan[] = [
   },
   {
     day: 14,
-    title: "The Future: IBRs & HVDC",
+    title: "Distribution & State Estimation",
     category: "Modern Grid",
     lessons: [
       {
@@ -149,8 +157,16 @@ export const COURSE_CURRICULUM: DayPlan[] = [
         title: "Inverter-Based Resources (IBRs)",
         description: "Grid-following vs Grid-forming inverters.",
         content: "Traditional grids relied on mechanical inertia. Solar and Wind use inverters. Grid-forming inverters can act as voltage sources, providing 'Virtual Inertia' to stabilize the grid as coal and gas plants retire.",
-        keywords: ["Virtual Inertia", "Grid Forming", "LCC vs VSC HVDC"],
+        keywords: ["Virtual Inertia", "Grid Forming", "Inertia Constant"],
         mathHighlight: "E_{kinetic} = \frac{1}{2} J \omega^2"
+      },
+      {
+        id: "14.2",
+        title: "Distribution State Estimation (DSE)",
+        description: "Estimating the unknown in the Smart Grid.",
+        content: "In transmission, we have high redundancy. In Distribution, we have few sensors. DSE uses 'Weighted Least Squares' (WLS) to merge real-time measurements (SCADA) with 'Pseudo-measurements' (forecasted loads) and AMI (Smart Meter) data.\n\nChallenge: Distribution systems are unbalanced (Phase A may have 2x more load than Phase B). Thus, DSE must be performed on a per-phase basis using complex models of line coupling.",
+        keywords: ["WLS", "Observability", "Pseudo-measurements"],
+        mathHighlight: "min \sum w_i (z_i - h_i(x))^2"
       }
     ]
   }

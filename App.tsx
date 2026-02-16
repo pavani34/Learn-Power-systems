@@ -109,8 +109,9 @@ const App: React.FC = () => {
                 <div className="mt-8">
                   {lesson.id === "1.2" && <Visualizer type="phasor" />}
                   {lesson.id === "3.1" && <Visualizer type="transformer-efficiency" />}
+                  {lesson.id === "6.2" && <Visualizer type="sparsity" />}
                   {lesson.id === "9.1" && <Visualizer type="sequence-network" />}
-                  {lesson.id === "14.1" && <Visualizer type="load-curve" />}
+                  {lesson.id === "14.2" && <Visualizer type="residuals" />}
                 </div>
               </section>
             ))}

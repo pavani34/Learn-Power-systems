@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, ScatterChart, Scatter, ZAxis } from 'recharts';
 
 interface VisualizerProps {
-  type: 'load-curve' | 'phasor' | 'transformer-efficiency' | 'sequence-network';
+  type: 'load-curve' | 'phasor' | 'transformer-efficiency' | 'sequence-network' | 'sparsity' | 'residuals';
 }
 
 const loadData = [
@@ -15,6 +15,15 @@ const loadData = [
 const efficiencyData = [
   { load: 0, eff: 0 }, { load: 20, eff: 85 }, { load: 40, eff: 92 },
   { load: 60, eff: 96 }, { load: 80, eff: 98 }, { load: 100, eff: 97 },
+];
+
+const residualData = [
+  { id: 1, raw: 1.05, estimated: 1.02, error: 0.03 },
+  { id: 2, raw: 0.98, estimated: 1.00, error: -0.02 },
+  { id: 3, raw: 1.10, estimated: 1.04, error: 0.06 },
+  { id: 4, raw: 1.01, estimated: 1.01, error: 0.00 },
+  { id: 5, raw: 0.95, estimated: 0.99, error: -0.04 },
+  { id: 6, raw: 1.03, estimated: 1.02, error: 0.01 },
 ];
 
 const Visualizer: React.FC<VisualizerProps> = ({ type }) => {
@@ -36,6 +45,48 @@ const Visualizer: React.FC<VisualizerProps> = ({ type }) => {
             <Tooltip />
             <Area type="monotone" dataKey="load" stroke="#2563eb" fillOpacity={1} fill="url(#colorLoad)" />
           </AreaChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  }
+
+  if (type === 'sparsity') {
+    const size = 10;
+    const grid = [];
+    for (let i = 0; i < size; i++) {
+      for (let j = 0; j < size; j++) {
+        const isNonZero = (i === j) || (i === j + 1) || (i === j - 1) || (i === 0 && j === size - 1);
+        grid.push({ x: i, y: j, val: isNonZero ? 1 : 0 });
+      }
+    }
+
+    return (
+      <div className="h-64 bg-slate-900 rounded-xl p-4 border border-slate-700 flex flex-col items-center">
+        <h4 className="text-xs font-bold text-slate-400 mb-2 uppercase w-full">Y-Bus Matrix Sparsity Visualization</h4>
+        <div className="grid grid-cols-10 gap-0.5 w-40 h-40 mt-2 border border-slate-700">
+          {grid.map((cell, idx) => (
+            <div key={idx} className={`w-full h-full ${cell.val ? 'bg-blue-500' : 'bg-slate-800 opacity-20'}`} />
+          ))}
+        </div>
+        <p className="text-[10px] text-slate-500 mt-4">Blue = Non-zero (connected buses). Notice the density is low!</p>
+      </div>
+    );
+  }
+
+  if (type === 'residuals') {
+    return (
+      <div className="h-64 bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+        <h4 className="text-xs font-bold text-slate-500 mb-4 uppercase">State Estimation: Raw vs Estimated (PU)</h4>
+        <ResponsiveContainer width="100%" height="80%">
+          <ScatterChart>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+            <XAxis dataKey="id" name="Meter ID" axisLine={false} tickLine={false} tick={{fontSize: 10}} />
+            <YAxis name="Voltage" domain={[0.9, 1.15]} axisLine={false} tickLine={false} tick={{fontSize: 10}} />
+            <ZAxis range={[60, 60]} />
+            <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+            <Scatter name="Raw Metering (Noisy)" data={residualData.map(d => ({id: d.id, val: d.raw}))} fill="#ef4444" />
+            <Scatter name="WLS Estimate (Filtered)" data={residualData.map(d => ({id: d.id, val: d.estimated}))} fill="#22c55e" shape="diamond" />
+          </ScatterChart>
         </ResponsiveContainer>
       </div>
     );
