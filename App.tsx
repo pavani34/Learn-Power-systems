@@ -1,10 +1,49 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { COURSE_CURRICULUM } from './constants';
 import Sidebar from './components/Sidebar';
 import AITutor from './components/AITutor';
 import Visualizer from './components/Visualizer';
 import { Progress } from './types';
+import katex from 'katex';
+
+interface LatexProps {
+  formula: string;
+  displayMode?: boolean;
+}
+
+const Latex: React.FC<LatexProps> = ({ formula, displayMode = false }) => {
+  const html = useMemo(() => {
+    try {
+      return katex.renderToString(formula, {
+        displayMode,
+        throwOnError: false,
+      });
+    } catch (e) {
+      console.error(e);
+      return formula;
+    }
+  }, [formula, displayMode]);
+
+  return <span dangerouslySetInnerHTML={{ __html: html }} />;
+};
+
+const ContentRenderer: React.FC<{ text: string }> = ({ text }) => {
+  // Regex to find $...$ for inline math
+  const parts = text.split(/(\$[^\$]+\$)/g);
+  
+  return (
+    <div className="prose prose-slate max-w-none whitespace-pre-wrap text-lg leading-relaxed">
+      {parts.map((part, i) => {
+        if (part.startsWith('$') && part.endsWith('$')) {
+          const formula = part.slice(1, -1);
+          return <Latex key={i} formula={formula} />;
+        }
+        return <span key={i}>{part}</span>;
+      })}
+    </div>
+  );
+};
 
 const App: React.FC = () => {
   const [currentDayNum, setCurrentDayNum] = useState(1);
@@ -75,24 +114,22 @@ const App: React.FC = () => {
                 </div>
                 
                 <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xl shadow-slate-200/50 leading-relaxed text-slate-700 relative overflow-hidden">
-                  <div className="prose prose-slate max-w-none whitespace-pre-wrap text-lg">
-                    {lesson.content}
-                  </div>
+                  <ContentRenderer text={lesson.content} />
                   
                   {lesson.mathHighlight && (
-                    <div className="mt-8 bg-slate-50 border-y border-slate-100 -mx-8 px-8 py-6 flex flex-col items-center">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Mathematical Foundation</span>
-                      <div className="font-mono text-xl text-blue-700 bg-white px-6 py-3 rounded-lg border border-blue-100 shadow-sm">
-                        {lesson.mathHighlight}
+                    <div className="mt-8 bg-slate-50 border-y border-slate-100 -mx-8 px-8 py-8 flex flex-col items-center">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Core Mathematical Foundation</span>
+                      <div className="w-full text-center overflow-x-auto overflow-y-hidden py-2">
+                        <Latex formula={lesson.mathHighlight} displayMode={true} />
                       </div>
                     </div>
                   )}
 
                   {lesson.resources && (
-                    <div className="mt-6 flex flex-wrap gap-4 items-center">
+                    <div className="mt-6 flex flex-wrap gap-4 items-center border-t border-slate-50 pt-6">
                       <span className="text-xs font-bold text-slate-400 uppercase">Recommended Reading:</span>
                       {lesson.resources.map(res => (
-                        <span key={res} className="text-xs text-blue-600 underline cursor-help">{res}</span>
+                        <span key={res} className="text-xs text-blue-600 hover:text-blue-800 transition-colors cursor-help italic">{res}</span>
                       ))}
                     </div>
                   )}
@@ -124,7 +161,7 @@ const App: React.FC = () => {
                 <h4 className="text-blue-400 font-bold uppercase tracking-[0.2em] text-[10px] mb-4">Strategic Roadmap</h4>
                 {currentDayNum < 14 ? (
                   <>
-                    <p className="text-3xl font-black mb-6 tracking-tight">Up Next: {COURSE_CURRICULUM[currentDayNum].title}</p>
+                    <p className="text-3xl font-black mb-6 tracking-tight">Up Next: {COURSE_CURRICULUM.find(d => d.day === currentDayNum + 1)?.title || 'Next Module'}</p>
                     <button 
                       onClick={() => {
                         markDayComplete();

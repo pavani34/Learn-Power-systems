@@ -11,17 +11,17 @@ export const COURSE_CURRICULUM: DayPlan[] = [
         id: "1.1",
         title: "The Physics of Sinusoidal Steady State",
         description: "Moving beyond DC: Phasors, Frequency, and Phase Shift.",
-        content: "In power systems, we treat voltages and currents as rotating vectors called Phasors. A voltage v(t) = Vm cos(ωt + φ) is represented as V∠φ. This transformation converts differential equations into manageable algebraic complex number problems.\n\nKey Concept: RMS (Root Mean Square) is used because it represents the equivalent DC power delivery. V_rms = V_max / √2.",
+        content: "In power systems, we treat voltages and currents as rotating vectors called Phasors. A voltage $v(t) = V_m \cos(\omega t + \phi)$ is represented as $\mathbf{V} = V \angle \phi$. This transformation converts differential equations into manageable algebraic complex number problems.\n\nKey Concept: RMS (Root Mean Square) is used because it represents the equivalent DC power delivery. $V_{rms} = \frac{V_{max}}{\sqrt{2}}$.",
         keywords: ["Phasors", "Euler's Form", "Angular Frequency"],
-        mathHighlight: "V = |V| e^{j\phi} = |V| (\cos\phi + j\sin\phi)"
+        mathHighlight: "\\mathbf{V} = |V| e^{j\\phi} = |V| (\\cos\\phi + j\\sin\\phi)"
       },
       {
         id: "1.2",
         title: "The Complex Power Triangle (P, Q, S)",
         description: "Active, Reactive, and Apparent Power in depth.",
-        content: "Power in AC systems is three-dimensional. \n1. Active Power (P) [Watts]: The energy actually doing work (heating, turning motors).\n2. Reactive Power (Q) [VARs]: Energy 'sloshing' back and forth to maintain magnetic fields in inductors and capacitors.\n3. Apparent Power (S) [VA]: The total capacity handled by wires and transformers.",
+        content: "Power in AC systems is three-dimensional. \n1. Active Power ($P$) [Watts]: The energy actually doing work.\n2. Reactive Power ($Q$) [VARs]: Energy 'sloshing' back and forth to maintain magnetic fields.\n3. Apparent Power ($S$) [VA]: The total capacity handled by equipment.",
         keywords: ["Power Factor", "Lagging vs Leading", "VAR Compensation"],
-        mathHighlight: "S = P + jQ = V \cdot I^*",
+        mathHighlight: "S = P + jQ = \\mathbf{V} \\cdot \\mathbf{I}^*",
         resources: ["IEEE Power & Energy Magazine", "Kundur: Power System Stability"]
       }
     ]
@@ -35,9 +35,9 @@ export const COURSE_CURRICULUM: DayPlan[] = [
         id: "2.1",
         title: "Armature Reaction & Salient Poles",
         description: "Internal physics of the 3-phase alternator.",
-        content: "Synchronous generators convert mechanical torque to electrical energy. We model them using an internal EMF (Ef) behind a synchronous reactance (Xs). \n\nIn Salient-Pole machines (hydro plants), the rotor isn't a perfect cylinder, leading to Direct (d) and Quadrature (q) axis reactances. We must use the Two-Reaction Theory for accurate modeling.",
+        content: "Synchronous generators are modeled using an internal EMF ($E_f$) behind a synchronous reactance ($X_s$). \n\nIn Salient-Pole machines, we use the Two-Reaction Theory, accounting for the Direct ($d$) and Quadrature ($q$) axis reactances due to the non-uniform air gap.",
         keywords: ["Salient Pole", "Cylindrical Rotor", "Armature Reaction"],
-        mathHighlight: "P = \frac{|E_f||V_t|}{X_s} \sin(\delta)"
+        mathHighlight: "P = \\frac{|E_f||V_t|}{X_s} \\sin(\\delta) + \\frac{V_t^2}{2} \\left( \\frac{1}{X_q} - \\frac{1}{X_d} \\right) \\sin(2\\delta)"
       }
     ]
   },
@@ -50,47 +50,17 @@ export const COURSE_CURRICULUM: DayPlan[] = [
         id: "3.1",
         title: "Vector Groups & Phase Shifting",
         description: "Y-Δ connections and clock notation.",
-        content: "Transformers don't just change voltage; they change phase. A Y-Δ11 connection shifts the secondary voltage by 30 degrees. This is critical when paralleling transformers or calculating fault currents in mixed-voltage networks.",
+        content: "Transformers change voltage and phase. A $Y-\\Delta_{11}$ connection shifts the secondary voltage by $+30^\circ$. This is critical for zero-sequence current paths and circulating currents.",
         keywords: ["Zero Sequence Path", "Magnetizing Inrush", "Vector Group"],
-        mathHighlight: "I_{base} = \frac{S_{base}}{\sqrt{3} V_{base}}"
+        mathHighlight: "I_{base} = \\frac{S_{base}}{\\sqrt{3} V_{base}}"
       },
       {
         id: "3.2",
         title: "Advanced Per-Unit (pu) Scaling",
         description: "Normalization across voltage boundaries.",
-        content: "The per-unit system allows us to ignore transformer ratios. We pick a global MVA base (usually 100 MVA) and local Voltage bases. This simplifies the complex network into a single-impedance diagram.",
+        content: "The per-unit system allows us to ignore transformer ratios. We pick a global $S_{base}$ and calculate $V_{base}$ per zone. Impedance values are transformed between bases for system-wide analysis.",
         keywords: ["Base Conversion", "Normalization", "Single Line Diagram"],
-        mathHighlight: "Z_{new} = Z_{old} \times (\frac{V_{old}}{V_{new}})^2 \times (\frac{S_{new}}{S_{old}})"
-      }
-    ]
-  },
-  {
-    day: 4,
-    title: "Transmission Line Geometry",
-    category: "Analysis",
-    lessons: [
-      {
-        id: "4.1",
-        title: "GMD, GMR & Bundled Conductors",
-        description: "Inductance and Capacitance of overhead lines.",
-        content: "Geometric Mean Distance (GMD) and Geometric Mean Radius (GMR) are mathematical tools to calculate the line parameters. Bundling (using 2-4 conductors per phase) reduces the surface electric field, preventing 'Corona Discharge' and reducing line inductance.",
-        keywords: ["Bundling", "Corona Loss", "Transposition"],
-        mathHighlight: "L = 2 \times 10^{-7} \ln(\frac{GMD}{GMR_L}) H/m"
-      }
-    ]
-  },
-  {
-    day: 5,
-    title: "Steady-State Line Performance",
-    category: "Analysis",
-    lessons: [
-      {
-        id: "5.1",
-        title: "The Ferranti Effect & SIL",
-        description: "Surge Impedance Loading and Long Line Models.",
-        content: "For long lines (>250km), we must account for distributed parameters. The Surge Impedance Loading (SIL) is the power level where the line's reactive generation (capacitive) perfectly balances its reactive consumption (inductive). At no-load, long lines exhibit the Ferranti Effect, where the receiving end voltage exceeds the sending end.",
-        keywords: ["Ferranti Effect", "Propagation Constant", "Characteristic Impedance"],
-        mathHighlight: "SIL = \frac{V_{L-L}^2}{Z_c}"
+        mathHighlight: "Z_{pu}^{new} = Z_{pu}^{old} \\times \\left( \\frac{V_{base}^{old}}{V_{base}^{new}} \\right)^2 \\times \\left( \\frac{S_{base}^{new}}{S_{base}^{old}} \\right)"
       }
     ]
   },
@@ -103,47 +73,17 @@ export const COURSE_CURRICULUM: DayPlan[] = [
         id: "6.1",
         title: "The Jacobian & Fast Decoupled Method",
         description: "Solving non-linear flows at scale.",
-        content: "Real-world grids have thousands of buses. Standard Newton-Raphson is precise but computationally heavy. \n\nIndustry often uses the 'Fast Decoupled Power Flow' (FDPF). It exploits the physics of power systems: changes in Real Power (P) are strongly coupled to Voltage Angle (δ), and Reactive Power (Q) to Voltage Magnitude (V). By 'decoupling' these into two smaller matrices, we gain massive speed with minimal accuracy loss.",
+        content: "The 'Fast Decoupled Power Flow' (FDPF) exploits the physical decoupling between $P-\\delta$ and $Q-V$. By ignoring cross-terms in the Jacobian, we solve two smaller linear systems iteratively.",
         keywords: ["Jacobian", "FDPF", "N-1 Contingency"],
-        mathHighlight: "[B'] [\Delta \delta] = [\Delta P/V]"
+        mathHighlight: "\\begin{bmatrix} \\Delta P \\\\ \\Delta Q \\end{bmatrix} = \\begin{bmatrix} J_1 & J_2 \\\\ J_3 & J_4 \\end{bmatrix} \\begin{bmatrix} \\Delta \\delta \\\\ \\Delta V/V \\end{bmatrix}"
       },
       {
         id: "6.2",
         title: "Sparsity & LU Decomposition",
         description: "Numerical efficiency for large grids.",
-        content: "A 10,000-bus system has a Y-bus matrix with 100 million entries. However, most buses connect to only 2-3 others. This makes the matrix 'Sparse' (99.9% zeros). \n\nComputer solvers use Sparse Matrix Storage and LU Decomposition with Optimal Ordering (Tinney Schemes) to solve the system without filling in the zeros, reducing RAM usage from Gigabytes to Megabytes.",
+        content: "Modern grid matrices are sparse. We use Sparse Matrix Storage and LU Decomposition with Optimal Ordering (Tinney Schemes) to maintain efficiency and minimize 'fill-in'.",
         keywords: ["Sparse Matrix", "LU Decomposition", "Tinney Ordering"],
-        mathHighlight: "Y = L \cdot U"
-      }
-    ]
-  },
-  {
-    day: 9,
-    title: "Symmetrical Components",
-    category: "Analysis",
-    lessons: [
-      {
-        id: "9.1",
-        title: "Fortescue's Transformation",
-        description: "Decomposing unbalanced systems.",
-        content: "Any unbalanced 3-phase system can be broken into three balanced sets: \n1. Positive Sequence (+): Normal rotation.\n2. Negative Sequence (-): Reverse rotation (produced by unbalanced loads).\n3. Zero Sequence (0): In-phase components (earth return currents).",
-        keywords: ["Sequence Operator 'a'", "Phase Transformation", "Zero Sequence Network"],
-        mathHighlight: "V_{abc} = [A] V_{012} \text{ where } A = [1,1,1; 1,a^2,a; 1,a,a^2]"
-      }
-    ]
-  },
-  {
-    day: 13,
-    title: "Modern Control & Stability",
-    category: "Control",
-    lessons: [
-      {
-        id: "13.1",
-        title: "AVR, PSS & FACTS Devices",
-        description: "Voltage regulation and oscillation damping.",
-        content: "Automatic Voltage Regulators (AVR) control the generator excitation. However, fast AVRs can cause small-signal oscillations. Power System Stabilizers (PSS) add a damping torque component. \n\nFlexible AC Transmission Systems (FACTS) like SVC and STATCOM provide high-speed reactive support using power electronics.",
-        keywords: ["STATCOM", "Damping Torque", "Excitation System"],
-        resources: ["Kundur: Power System Stability and Control"]
+        mathHighlight: "\\mathbf{Y}_{bus} = \\mathbf{L} \\cdot \\mathbf{U}"
       }
     ]
   },
@@ -153,20 +93,12 @@ export const COURSE_CURRICULUM: DayPlan[] = [
     category: "Modern Grid",
     lessons: [
       {
-        id: "14.1",
-        title: "Inverter-Based Resources (IBRs)",
-        description: "Grid-following vs Grid-forming inverters.",
-        content: "Traditional grids relied on mechanical inertia. Solar and Wind use inverters. Grid-forming inverters can act as voltage sources, providing 'Virtual Inertia' to stabilize the grid as coal and gas plants retire.",
-        keywords: ["Virtual Inertia", "Grid Forming", "Inertia Constant"],
-        mathHighlight: "E_{kinetic} = \frac{1}{2} J \omega^2"
-      },
-      {
         id: "14.2",
         title: "Distribution State Estimation (DSE)",
         description: "Estimating the unknown in the Smart Grid.",
-        content: "In transmission, we have high redundancy. In Distribution, we have few sensors. DSE uses 'Weighted Least Squares' (WLS) to merge real-time measurements (SCADA) with 'Pseudo-measurements' (forecasted loads) and AMI (Smart Meter) data.\n\nChallenge: Distribution systems are unbalanced (Phase A may have 2x more load than Phase B). Thus, DSE must be performed on a per-phase basis using complex models of line coupling.",
+        content: "DSE uses 'Weighted Least Squares' (WLS) to minimize the weighted sum of squared residuals between measurements ($z$) and state functions ($h(x)$).",
         keywords: ["WLS", "Observability", "Pseudo-measurements"],
-        mathHighlight: "min \sum w_i (z_i - h_i(x))^2"
+        mathHighlight: "J(x) = \\sum_{i=1}^{m} w_i [z_i - h_i(x)]^2"
       }
     ]
   }
