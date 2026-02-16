@@ -11,7 +11,7 @@ export const COURSE_CURRICULUM: DayPlan[] = [
         id: "1.1",
         title: "The Physics of Sinusoidal Steady State",
         description: "Moving beyond DC: Phasors, Frequency, and Phase Shift.",
-        content: "In power systems, we treat voltages and currents as rotating vectors called Phasors. A voltage $v(t) = V_m \cos(\omega t + \phi)$ is represented as $\mathbf{V} = V \angle \phi$. This transformation converts differential equations into manageable algebraic complex number problems.\n\nKey Concept: RMS (Root Mean Square) is used because it represents the equivalent DC power delivery. $V_{rms} = \frac{V_{max}}{\sqrt{2}}$.",
+        content: "In power systems, we treat voltages and currents as rotating vectors called Phasors. A voltage $v(t) = V_m \\cos(\\omega t + \\phi)$ is represented as $\\mathbf{V} = V \\angle \\phi$. This transformation converts differential equations into manageable algebraic complex number problems.\n\nKey Concept: RMS (Root Mean Square) is used because it represents the equivalent DC power delivery. $V_{rms} = \\frac{V_{max}}{\\sqrt{2}}$.",
         keywords: ["Phasors", "Euler's Form", "Angular Frequency"],
         mathHighlight: "\\mathbf{V} = |V| e^{j\\phi} = |V| (\\cos\\phi + j\\sin\\phi)"
       },
@@ -50,7 +50,7 @@ export const COURSE_CURRICULUM: DayPlan[] = [
         id: "3.1",
         title: "Vector Groups & Phase Shifting",
         description: "Y-Δ connections and clock notation.",
-        content: "Transformers change voltage and phase. A $Y-\\Delta_{11}$ connection shifts the secondary voltage by $+30^\circ$. This is critical for zero-sequence current paths and circulating currents.",
+        content: "Transformers change voltage and phase. A $Y-\\Delta_{11}$ connection shifts the secondary voltage by $+30^\\circ$. This is critical for zero-sequence current paths and circulating currents.",
         keywords: ["Zero Sequence Path", "Magnetizing Inrush", "Vector Group"],
         mathHighlight: "I_{base} = \\frac{S_{base}}{\\sqrt{3} V_{base}}"
       },
